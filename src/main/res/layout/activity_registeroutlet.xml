@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.rohithreddy.kmstockflow.registeroutlet">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:paddingTop="1dp"
+            android:saveEnabled="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <EditText
+                android:id="@+id/ro1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTint="#FF4081"
+                android:hint="Full name"
+                android:inputType="textPersonName"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/ro2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableTint="#FF4081"
+                android:hint="Outletname"
+                android:inputType="textAutoComplete"
+                android:maxLines="1" />
+            <EditText
+                android:id="@+id/ro3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTint="#FF4081"
+                android:layout_marginTop="8dp"
+                android:hint="Phone number"
+                android:inputType="phone"
+                android:singleLine="true" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/ro4a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableTint="#FF4081"
+        android:hint="   Month    "
+        android:textSize="20sp"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/ro4b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableTint="#FF4081"
+        android:hint="    Day   "
+        android:textSize="20sp"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/ro4c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableTint="#FF4081"
+        android:hint="    Year    "
+        android:textSize="20sp"
+        android:maxLines="1" />
+
+    <Button
+        android:id="@+id/setdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableTint="#FF4081"
+        android:text="setDate" />
+</LinearLayout>
+
+    <Spinner
+                android:id="@+id/ro5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTint="#FF4081"
+                android:hint="outlet Type"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/ro6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableTint="#FF4081"
+                android:hint="Area(sft)"
+                android:inputType="number"
+                android:maxLines="1" />
+            <Spinner
+                android:id="@+id/ro7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableTint="#FF4081"
+                android:hint="Main road Vicinity"
+                android:singleLine="true" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/ro8"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableTint="#FF4081"
+                android:hint="search pincode   "
+                android:maxLines="1" />
+
+    <Spinner
+        android:id="@+id/ro8a"
+        android:layout_width="214dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableTint="#FF4081"
+        android:singleLine="true" />
+
+</LinearLayout>
+
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="22dp"
+                android:background="#d67601"
+                android:text="submit"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+    </RelativeLayout>
+

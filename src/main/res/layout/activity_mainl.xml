@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.rohithreddy.kmstockflow.rmain">
+
+    <Button
+        android:id="@+id/su"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="97dp"
+        android:text="stock update" />
+
+    <Button
+        android:id="@+id/ro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="register outlet"
+        android:layout_below="@+id/su"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/at"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ro"
+        android:layout_below="@+id/ro"
+        android:layout_marginTop="40dp"
+        android:text="attendance" />
+
+    <Button
+        android:id="@+id/sr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimaryDark"
+        android:text="submit report"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+</RelativeLayout>
