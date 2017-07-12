@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableTint="#FF4081"
+                android:textColor="#d67601"
                 android:hint="Full name"
                 android:inputType="textPersonName"
                 android:singleLine="true" />
@@ -34,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawableTint="#FF4081"
+                android:textColor="#d67601"
                 android:hint="Outletname"
                 android:inputType="textAutoComplete"
                 android:maxLines="1" />
@@ -43,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:drawableTint="#FF4081"
                 android:layout_marginTop="8dp"
+                android:textColor="#d67601"
                 android:hint="Phone number"
                 android:inputType="phone"
                 android:singleLine="true" />
@@ -55,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableTint="#FF4081"
+        android:textColor="#d67601"
         android:hint="   Month    "
         android:textSize="20sp"
         android:maxLines="1" />
@@ -64,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableTint="#FF4081"
+        android:textColor="#d67601"
         android:hint="    Day   "
         android:textSize="20sp"
         android:maxLines="1" />
@@ -73,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableTint="#FF4081"
+        android:textColor="#d67601"
         android:hint="    Year    "
         android:textSize="20sp"
         android:maxLines="1" />
@@ -101,6 +107,7 @@
                 android:layout_marginTop="8dp"
                 android:drawableTint="#FF4081"
                 android:hint="Area(sft)"
+                android:textColor="#d67601"
                 android:inputType="number"
                 android:maxLines="1" />
             <Spinner
@@ -117,6 +124,7 @@
             <android.support.v7.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/ro8"
                 android:layout_width="172dp"
+                android:textColor="#d67601"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawableTint="#FF4081"

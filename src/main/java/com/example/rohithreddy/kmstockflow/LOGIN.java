@@ -34,6 +34,7 @@ public class LOGIN extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle("                       iKWIKMINT");
         session = new UserSessionManager(getApplicationContext());
+
         if(session.isUserLoggedIn()){
             String x,y,z;
             HashMap<String, String> user =  session.getUserDetails();
@@ -81,7 +82,7 @@ public class LOGIN extends AppCompatActivity {
                                     .add("field2",pass)
                                     .build();
                             Request request = new Request.Builder()
-                                    .url("http://172.16.1.12:8888/kwikmint/index.php/api/stock_flow/verifyLogin")
+                                    .url(getResources().getString(R.string.url_text)+"/verifyLogin")
                                     .post(formBody)
                                     .build();
                             try {

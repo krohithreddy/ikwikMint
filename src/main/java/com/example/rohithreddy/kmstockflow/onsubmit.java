@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -126,7 +127,7 @@ public class onsubmit {
                            .add("request", jsonStr)
                            .build();
                    Request request = new Request.Builder()
-                           .url("http://172.16.1.12:8888/kwikmint/index.php/api/stock_flow/bgLocation")
+                           .url(mContext.getResources().getString(R.string.url_text)+"/bgLocation")
                            .post(formBody)
                            .build();
                    try {
@@ -160,7 +161,15 @@ public class onsubmit {
                        db.execSQL("DELETE FROM mylocation WHERE phonen=" + phone + " ");
                        Toast.makeText(mContext, "recored successful", Toast.LENGTH_LONG).show();
                    } else if (result1.equals("failed"))
+                   {
                        Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
+                       if(error.equals("ADAPILC")){
+                           session.logoutUser();
+                           Intent loginIntent = new Intent(mContext, LOGIN.class);
+                           mContext.startActivity(loginIntent);
+                           //repeatTask.cancel();
+                       }
+                   }
                    else {
                        Toast.makeText(mContext, "server down try again later", Toast.LENGTH_LONG).show();
                        x = "nointernet";

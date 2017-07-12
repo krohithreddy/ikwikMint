@@ -144,6 +144,10 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            if (session.isattendancestarted()) {
+                at.bool=false;
+               at.tb1.performClick();
+            }
             session.logoutUser();
             Intent loginIntent = new Intent(rmain.this, LOGIN.class);
             rmain.this.startActivity(loginIntent);
@@ -182,17 +186,6 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
                 break;
             case R.id.nav_menu2:
                 navItemIndex = 1;
-                if (session.isattendancestarted()) {
-                    System.out.print("\nsession + check");
-                    at.verify=1;
-                    System.out.print("verify is 1");
-                    bool = false;
-                } else {
-
-                    System.out.print("\nverify is 0");
-                 at.verify=0;
-                    bool = true;
-                }
                 fragment = new attendance();
                 break;
             case R.id.nav_menu3:
@@ -227,7 +220,7 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
                         public void run() {
                             //if(count>1)
                             //  repeatTask.cancel();
-                            System.out.print("its timeeeeeeeeeeeeeeeeee");
+                         //   System.out.print("its timeeeeeeeeeeeeeeeeee");
                             // count++;
                             GPSTracker gps = new GPSTracker(rmain.this);
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d HH-mm-ss");
@@ -255,7 +248,7 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
                                         outputStream.write(l1.getBytes());
                                         outputStream.write(l2.getBytes());
                                         outputStream.close();
-                                        db.execSQL("INSERT INTO mylocation VALUES('" + phone + "','" + lm + "','" + longi + "','" + lati + "');");
+                                        db.execSQL("INSERT INTO mylocation VALUES('" + phone + "','" + lm + "','" + lati + "','" + longi + "');");
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }

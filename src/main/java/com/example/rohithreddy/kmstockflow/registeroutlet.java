@@ -11,6 +11,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
@@ -180,6 +183,12 @@ public class registeroutlet extends Fragment {
                 // TODO Auto-generated method stub
                 r5 = String.valueOf(parent.getItemAtPosition(position));
                 System.out.print("\nrrrrrrr"+r5);
+                if(r5=="Tea Stall")
+                    r5="5";
+                if(r5=="Pan Shop")
+                    r5="6";
+                if(r5=="Retail Store")
+                    r5="7";
 
             }
 
@@ -209,8 +218,10 @@ public class registeroutlet extends Fragment {
                 // TODO Auto-generated method stub
 
                 r8 = String.valueOf(parent.getItemAtPosition(position));
+                System.out.print("\nselect");
                 //sp3.setTop(position);
                 sp3.setSelection(position);
+                System.out.print("\nset");
                 int x = pin.indexOf(r8);
                 if (x>0)
                 r8a = formList.get(x);
@@ -227,6 +238,7 @@ public class registeroutlet extends Fragment {
                                        int position, long id) {
                 // TODO Auto-generated method stub
                 pinvalue = String.valueOf(parent.getItemAtPosition(position));
+                System.out.print("\npinvalue select");
                 //if(!pinvalue.equals("Get Pincode"))
                // ro8.setText(pinvalue);
                 int x = pin.indexOf(pinvalue);
@@ -251,6 +263,12 @@ public class registeroutlet extends Fragment {
                                        int position, long id) {
                 // TODO Auto-generated method stub
                 r7 = String.valueOf(parent.getItemAtPosition(position));
+                if(r7=="Near")
+                    r7="2";
+                if(r7=="Far")
+                    r7="3";
+                if(r7=="Beside")
+                    r7="1";
 
             }
 
@@ -276,6 +294,11 @@ public class registeroutlet extends Fragment {
                     if(x>0)
                         r8a = formList.get(x);
                 }
+            /*(    if(pinvalue == "Get Pincode"){
+                    int x = pin.indexOf(ro8.getText().toString());
+                    if(x>0)
+                        r8a = formList.get(x);
+                }*/
                 r1 = ro1.getText().toString();
                 r2 = ro2.getText().toString();
                 r3 = ro3.getText().toString();
@@ -369,7 +392,7 @@ public class registeroutlet extends Fragment {
                                         .add("request", jsonStr)
                                         .build();
                                 Request request = new Request.Builder()
-                                        .url("http://172.16.1.12:8888/kwikmint/index.php/api/stock_flow/posForm")
+                                        .url(getResources().getString(R.string.url_text)+"/posForm")
                                         .post(formBody)
                                         .build();
                                 try {
@@ -401,6 +424,17 @@ public class registeroutlet extends Fragment {
                                     Toast.makeText(getContext(), "check your internet connection", Toast.LENGTH_LONG).show();
                                 else if (result1.equals("success")) {
                                     // db.execSQL("DELETE FROM videodata WHERE phonen="+phone+" ");
+                                    Fragment fragment = null;
+                                    fragment = new registeroutlet();
+                                    if (fragment != null) {
+                                        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                        ft.replace(R.id.content_frame, fragment);
+                                        ft.commit();
+                                    }
+
+                                    DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                                    drawer.closeDrawer(GravityCompat.START);
+
                                     Toast.makeText(getContext(), "recored successful", Toast.LENGTH_LONG).show();
                                 } else if (result1.equals("failed"))
                                     Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
@@ -408,7 +442,7 @@ public class registeroutlet extends Fragment {
                                     Toast.makeText(getContext(), "server down try again later", Toast.LENGTH_LONG).show();
                                     x = "nointernet";
                                 }
-                                result1="";
+                                result1="";error="";
                             }
 
 
@@ -418,20 +452,12 @@ public class registeroutlet extends Fragment {
                 } else {
                     gps.showSettingsAlert();
                 }
-                // new onsubmit(getActivity());
+                 new onsubmit(getActivity());
 
             }
         });
 
     }
-
-    public void setDate(View view) {
-        onCreateDialog(999).show();
-        Toast.makeText(getContext(), "ca",
-                Toast.LENGTH_SHORT)
-                .show();
-    }
-
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub
         if (id == 999) {
@@ -450,101 +476,11 @@ public class registeroutlet extends Fragment {
                     // arg1 = year
                     // arg2 = month
                     // arg3 = day
-                    //showDate(arg1, arg2+1, arg3);
                     r4a="";r4b="";r4c="";
                     ro4a.setText(Integer.toString(arg2 + 1));r4a=Integer.toString(arg2 + 1);
-                    System.out.print(r4a+"<----\n");
                     ro4b.setText(Integer.toString(arg3));r4b=Integer.toString(arg3);
-                    System.out.print(r4b+"<====\n");
                     ro4c.setText(Integer.toString(arg1));r4c=Integer.toString(arg1);
-                    System.out.print(r4c+"<------\n");
+
                 }
             };
-
-    public String loadJSON() {
-        String json = null;
-        try { // ID of video file.
-            String pkgName = getActivity().getPackageName();
-            resID = this.getResources().getIdentifier("pincode", "raw", pkgName);
-            // videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + id));
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-        InputStream is = getResources().openRawResource(resID);
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        String jsonString = writer.toString();
-        return jsonString;
-    }
-
-    public ArrayList<HashMap<String, String>> loadlist() {
-        String json = null;
-        ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
-        try { // ID of video file.
-            String pkgName = getActivity().getPackageName();
-            resID = this.getResources().getIdentifier("pincode", "raw", pkgName);
-            // videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + id));
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-
-        try {
-            InputStream is = getResources().openRawResource(resID);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
-        try {
-            JSONObject obj = new JSONObject(json);
-             JSONArray m_jArry= obj.getJSONArray("pincodes");
-
-            HashMap<String, String> m_li;
-
-            for (int i = 0; i < m_jArry.length(); i++) {
-                JSONObject jo_inside = m_jArry.getJSONObject(i);
-               // Log.d("Details-->", jo_inside.getString("formule"));
-                String id = jo_inside.getString("id");
-                String name = jo_inside.getString("name");
-                String pincode = jo_inside.getString("pincode");
-                //Add your values in your `ArrayList` as below:
-                String pin=pincode+"("+name+")";
-                m_li = new HashMap<String, String>();
-                m_li.put(pin, id);
-             //   m_li.put("name", name);
-            //    m_li.put("pincode", pincode);
-
-                formList.add(m_li);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return formList;
-    }
 }
