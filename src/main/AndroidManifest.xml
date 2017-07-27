@@ -16,7 +16,9 @@
         android:label="Kwikmint"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name="android.support.multidex.MultiDexApplication"
+        >
         <activity android:name=".LOGIN">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".playvideo"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -34,7 +37,10 @@
         <activity
             android:name=".ScanActivity"
             android:label="@string/title_activity_scan"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Mapping" />
+        <activity android:name=".tabsmapping" />
+        <activity android:name=".history"></activity>
     </application>
 
 </manifest>

@@ -24,7 +24,6 @@ public class getpincodes {
     public getpincodes(Context context) {
         this.mContext = context;
         something();
-        //this.second = second;
     }
 public ArrayList<String>  getformlist(){
     return formList;
@@ -34,15 +33,11 @@ public ArrayList<String> getPinlist(){
 
     }
     public  int something() {
-      //  ArrayList<HashMap<String, String>> formlist=null;
-       // ArrayList<String> pinlist=null ;
         int resID=0;
         String json = null;
-      //  ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
-        try { // ID of video file.
+        try {
             String pkgName = mContext.getPackageName();
             resID = mContext.getResources().getIdentifier("pincode", "raw", pkgName);
-            // videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + id));
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
@@ -68,19 +63,13 @@ public ArrayList<String> getPinlist(){
 
             for (int i = 0; i < m_jArry.length(); i++) {
                 JSONObject jo_inside = m_jArry.getJSONObject(i);
-                // Log.d("Details-->", jo_inside.getString("formule"));
                 String id = jo_inside.getString("id");
                 String name = jo_inside.getString("name");
                 String pincode = jo_inside.getString("pincode");
-                //Add your values in your `ArrayList` as below:
                 String pin=pincode+"("+name+")";
                 String pinrev=name+"("+pincode+")";
                 m_li = new HashMap<String, String>();
                 m_li.put(pin, id);
-                //   m_li.put("name", name);
-                //    m_li.put("pincode", pincode);
-               // System.out.print(pin);
-              //  System.out.print(pinlist);
                 pinlist.add(pin);
                 pinlist.add(pinrev);
                 formList.add(id);
@@ -90,9 +79,6 @@ public ArrayList<String> getPinlist(){
             e.printStackTrace();
         }
 return 1;
-        //return new getpincodes(formlist, pinlist);
     }
 }
-
-// ...
 

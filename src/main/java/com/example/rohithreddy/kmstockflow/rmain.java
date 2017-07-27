@@ -1,16 +1,11 @@
 package com.example.rohithreddy.kmstockflow;
 
-import android.app.ProgressDialog;
-import android.content.ClipData;
+
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -24,11 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -41,27 +31,20 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 import static com.example.rohithreddy.kmstockflow.playvideo.READ_BLOCK_SIZE;
 
 public class rmain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     attendance at;
     public static int navItemIndex = 0;
-    private Cursor c;
+    public static String mapvalue ="";
     private View navHeader;
-    TextView name,fname;private ProgressDialog pDialog;
-    String x="nointernet"; String responseBody,responseBody1, result1="",error="", result2="",error2="" ,sk,phonenumber;
-    Response response,response1;
+    TextView name,fname;
+    String x="nointernet";
     String fullname = "myfile",filename1="mydata1";
-    String datetime = "Hello world!",lm="location not found";
+    String lm="location not found";
     double latitude,longitude;Integer pause =1;
-    private SQLiteDatabase db;boolean bool=true;UserSessionManager session;
-    Timer repeatTask;    String longi,lati,phone;  File file;
+    private SQLiteDatabase db;UserSessionManager session;
+    Timer repeatTask;String longi,lati,phone;  File file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +72,6 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
         navHeader = navigationView.getHeaderView(0);
         name = (TextView) navHeader.findViewById(R.id.myid);
         fname = (TextView) navHeader.findViewById(R.id.myid1);
-       // name =  (TextView) findViewById(R.id.myid);
-
 
         session = new UserSessionManager(rmain.this);
         HashMap<String, String> user =  session.getUserDetails();
@@ -100,9 +81,6 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
       //  name.getText().toString();
         name.setText(phone);
         fname.setText(fullname);
-       // System.out.print(name);
-        System.out.print("this is happenning\n");
-        System.out.print(phone);
         file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "kmsf");
         db=openOrCreateDatabase("PersonDB", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS mylocation(phonen VARCHAR,date VARCHAR,lat VARCHAR,lng VARCHAR);");
@@ -195,6 +173,10 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
             case R.id.nav_menu4:
                 navItemIndex = 3;
                 fragment = new registeroutlet();
+                break;
+            case R.id.nav_menu5:
+                navItemIndex = 4;
+                fragment = new tabsmapping();
                 break;
 
         }
@@ -308,7 +290,7 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
     public void onDestroy() {
         pause =0 ;
         super.onDestroy();
-        System.out.print("destroyeddddddddddddd");
+       // System.out.print("destroyeddddddddddddd");
        // Toast.makeText(getContext(), "onDestroy called", Toast.LENGTH_LONG).show();
 
     }
@@ -316,7 +298,7 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
     public void onStop() {
         pause =0 ;
         super.onStop();
-        System.out.print("stopppppppppp");
+      //  System.out.print("stopppppppppp");
        // Toast.makeText(getContext(), "onStop called", Toast.LENGTH_LONG).show();
 
     }

@@ -3,24 +3,21 @@ package com.example.rohithreddy.kmstockflow;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.app.ProgressDialog;;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,71 +29,48 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.rohithreddy.kmstockflow.playvideo.READ_BLOCK_SIZE;
-import android.app.Dialog;
 
 public class registeroutlet extends Fragment {
-    String filename = "myfile", filename1 = "mydata1";
-    Integer count = 0;
+    rmain mainscreen;
     String datetime = "Hello world!", lm = "location not found";
     double latitude, longitude;
     String longi, lati, phone, pass;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private ProgressDialog pDialog;
     String x = "nointernet";
-    String responseBody, responseBody1, result1 = "", error = "", result2 = "", error2 = "", sk, phonenumber;
-    Response response, response1;
-    File file;
-    Integer pause = 1;
-    EditText phonenum, stock;
+    String responseBody, result1 = "", error = "";
+    Response response;
     UserSessionManager session;
-    private SQLiteDatabase db;
-    boolean bool = true;
-    private Cursor c;
-    Timer repeatTask;
-    EditText ro1, ro2, ro3, ro6;AppCompatAutoCompleteTextView ro8;
+    public static EditText ro1, ro2, ro3=null, ro6;AppCompatAutoCompleteTextView ro8,ro10;
     TextView ro4a, ro4b, ro4c;
     String r1, r2, r3, r4,r4a,r4b,r4c, r5, r6, r7, r8,r8a,pinvalue;
     Spinner sp1, sp2,sp3;
     private int year, month, day;
     private Calendar calendar;
-    int resID,erase=0;
-    ArrayList<String>  formList,pin ;
+    int erase=0;
+    ArrayList<String>  formList,pin,rlist,rid ;
+    private Cursor c,d;
+    private SQLiteDatabase db;
+    int map,id;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
@@ -111,6 +85,91 @@ public class registeroutlet extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("      Register Outlet");
+        ro1 = (EditText) view.findViewById(R.id.ro1);
+        ro2 = (EditText) view.findViewById(R.id.ro2);
+        ro3 = (EditText) view.findViewById(R.id.ro3);
+        db=getActivity().openOrCreateDatabase("PersonDB", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS routelist(id VARCHAR," + "route VARCHAR," + "routenum VARCHAR);");
+        d = db.rawQuery("SELECT * FROM routelist", null);
+        map =0;
+        ArrayList<String> routelist = new ArrayList<String>();
+        ArrayList<String> routeid = new ArrayList<String>();
+      //  routelist.add(0,"Select Route");
+        if (!(d.moveToFirst()) || d.getCount() == 0){
+        }
+        else {
+            d.moveToFirst();
+            while (d.isAfterLast() == false) {
+                System.out.println(d.getColumnNames());
+
+                int totalColumn = d.getColumnCount();
+                for (int i = 0; i < totalColumn; i++) {
+                    if (d.getColumnName(i) != null) {
+                        try {
+                            if (d.getString(i) != null) {
+                                System.out.println("here i is"+i);
+                                System.out.println(d.getColumnName(i));
+                                System.out.println(d.getString(i));
+                            } else {
+                                System.out.println("its else" + c.getColumnName(i));
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                    System.out.println("one step over");
+                }
+                String route=d.getString(1)+"("+d.getString(2)+")";
+                String routerev=d.getString(2)+"("+d.getString(1)+")";
+                routelist.add(route);
+                routelist.add(routerev);
+                routeid.add(d.getString(0));
+                routeid.add(d.getString(0));
+                d.moveToNext();
+            }
+            rlist=routelist;
+            rid=routeid;
+            d.close();
+        }
+
+        if(mainscreen.mapvalue.trim().length() != 0){
+           id=Integer.parseInt(mainscreen.mapvalue);
+            map=1;
+            c = db.rawQuery("SELECT * FROM mapusers WHERE id="+id, null);
+            if (!(c.moveToFirst()) || c.getCount() == 0){
+            }
+            else {
+                c.moveToFirst();
+                while (c.isAfterLast() == false) {
+                    System.out.println(c.getColumnNames());
+
+                    int totalColumn = c.getColumnCount();
+                    for (int i = 0; i < totalColumn; i++) {
+                        if (c.getColumnName(i) != null) {
+                            try {
+                                if (c.getString(i) != null) {
+                                    System.out.println("here i is"+i);
+                                    System.out.println(c.getColumnName(i));
+                                    System.out.println(c.getString(i));
+                                } else {
+                                    System.out.println("its else" + c.getColumnName(i));
+                                }
+                            } catch (Exception e) {
+
+                            }
+                        }
+                        System.out.println("one step over");
+                    }
+                    ro1.setText(c.getString(1));
+                    ro2.setText(c.getString(2));
+                    ro3.setText(c.getString(3));
+                    c.moveToNext();
+                }
+                c.close();
+            }
+            mainscreen.mapvalue="";
+
+        }
         getpincodes pinco = new getpincodes(getActivity());
        //= new ArrayList<HashMap<String, String>>();
         formList=pinco.getformlist();
@@ -118,16 +177,20 @@ public class registeroutlet extends Fragment {
        // String pincodes = loadJSON();
       //  System.out.print(formList);
         pin = pinco.getPinlist();
+//        rlist.add(0,"select route");
         pin.add(0,"Get Pincode");
         formList.add(0,"0");
+      //  rid.add(0,"0");
+
         session = new UserSessionManager(getActivity());
         HashMap<String, String> user = session.getUserDetails();
         phone = user.get(UserSessionManager.KEY_NAME);
         pass = user.get(UserSessionManager.KEY_PASS);
         sp1 = (Spinner) view.findViewById(R.id.ro5);
         sp2 = (Spinner) view.findViewById(R.id.ro7);
-        sp3 = (Spinner) view.findViewById(R.id.ro8a);
+      //  sp3 = (Spinner) view.findViewById(R.id.ro8a);
         ro8 =  view.findViewById(R.id.ro8);
+        ro10 =  view.findViewById(R.id.ro10);
 
         // Spinner click listener
         //  spinner.((AdapterView.OnItemSelectedListener) this);
@@ -149,21 +212,21 @@ public class registeroutlet extends Fragment {
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
         ArrayAdapter<String> pinadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, pin);
+        ArrayAdapter<String> routeadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, rlist);
         ArrayAdapter<String> stypeda = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, types);
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stypeda.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        sp3.setAdapter(pinadapter);
+       // sp3.setAdapter(pinadapter);
         ro8.setAdapter(pinadapter);
+        ro10.setAdapter(routeadapter);
         // attaching data adapter to spinner
         sp1.setAdapter(dataAdapter);
         sp2.setAdapter(stypeda);
         final Button submit = (Button) view.findViewById(R.id.submit);
+        final Button sync = (Button) view.findViewById(R.id.sync);
         final Button setdate = (Button) view.findViewById(R.id.setdate);
-        ro1 = (EditText) view.findViewById(R.id.ro1);
-        ro2 = (EditText) view.findViewById(R.id.ro2);
-        ro3 = (EditText) view.findViewById(R.id.ro3);
         ro6 = (EditText) view.findViewById(R.id.ro6);
         ro4a = (TextView) view.findViewById(R.id.ro4a);
         ro4b = view.findViewById(R.id.ro4b);
@@ -175,6 +238,56 @@ public class registeroutlet extends Fragment {
 
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setpincodes pc = new setpincodes(getActivity(),phone,pass);
+                d = db.rawQuery("SELECT * FROM routelist", null);
+                ArrayList<String> routelist = new ArrayList<String>();
+                ArrayList<String> routeid = new ArrayList<String>();
+                //  routelist.add(0,"Select Route");
+                if (!(d.moveToFirst()) || d.getCount() == 0){
+                }
+                else {
+                    d.moveToFirst();
+                    while (d.isAfterLast() == false) {
+                        System.out.println(d.getColumnNames());
+
+                        int totalColumn = d.getColumnCount();
+                        for (int i = 0; i < totalColumn; i++) {
+                            if (d.getColumnName(i) != null) {
+                                try {
+                                    if (d.getString(i) != null) {
+                                        System.out.println("here i is"+i);
+                                        System.out.println(d.getColumnName(i));
+                                        System.out.println(d.getString(i));
+                                    } else {
+                                        System.out.println("its else" + c.getColumnName(i));
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            }
+                            System.out.println("one step over");
+                        }
+                        String route=d.getString(1)+"("+d.getString(2)+")";
+                        String routerev=d.getString(2)+"("+d.getString(1)+")";
+                        routelist.add(route);
+                        routelist.add(routerev);
+                        routeid.add(d.getString(0));
+                        routeid.add(d.getString(0));
+                        d.moveToNext();
+                    }
+                    rlist=routelist;
+                    rid=routeid;
+                    d.close();
+                }
+                ArrayAdapter<String> routeadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, rlist);
+                ro10.setAdapter(routeadapter);
+            }
+        });
+
         sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -218,29 +331,32 @@ public class registeroutlet extends Fragment {
                 // TODO Auto-generated method stub
 
                 r8 = String.valueOf(parent.getItemAtPosition(position));
-                System.out.print("\nselect");
+                System.out.print("\nselect"+r8+"position"+position);
                 //sp3.setTop(position);
-                sp3.setSelection(position);
+             //   sp3.setSelection(position);
                 System.out.print("\nset");
                 int x = pin.indexOf(r8);
+                System.out.print("\n------>index is "+x);
                 if (x>0)
                 r8a = formList.get(x);
+
                 erase=1;
 
             }
 
 
         });
-        sp3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+     /*   sp3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 // TODO Auto-generated method stub
                 pinvalue = String.valueOf(parent.getItemAtPosition(position));
-                System.out.print("\npinvalue select");
+                System.out.print("\npinvalue select "+pinvalue);
                 //if(!pinvalue.equals("Get Pincode"))
                // ro8.setText(pinvalue);
+                ro8.setText(pinvalue);
                 int x = pin.indexOf(pinvalue);
                 if(x>0)
                 r8a = formList.get(x);
@@ -254,7 +370,7 @@ public class registeroutlet extends Fragment {
                 // TODO Auto-generated method stub
 
             }
-        });
+        });*/
 
         sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -285,7 +401,6 @@ public class registeroutlet extends Fragment {
 
             }
         });
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -294,6 +409,8 @@ public class registeroutlet extends Fragment {
                     if(x>0)
                         r8a = formList.get(x);
                 }
+                System.out.print("\n------>"+pinvalue);
+                System.out.print("\n----->"+r8a);
             /*(    if(pinvalue == "Get Pincode"){
                     int x = pin.indexOf(ro8.getText().toString());
                     if(x>0)
@@ -326,9 +443,9 @@ public class registeroutlet extends Fragment {
                         ro6.setError("Area cant be empty ");
                     } else if (r7 == "Main road Vicinity") {
                         Toast.makeText(getContext(), "select a Main Vicinity type", Toast.LENGTH_LONG).show();
-                    } else if (pinvalue == "Get Pincode") {
+                    }/* else if (pinvalue == "Get Pincode") {
                         Toast.makeText(getContext(), "select a pincode", Toast.LENGTH_LONG).show();
-                    }  else if (r8a == null) {
+                    } */ else if (r8a == null) {
                         Toast.makeText(getContext(), "select a pincode from the list", Toast.LENGTH_LONG).show();
                         ro8.setError("select a pincode from the list");
                     } else if (latitude == 0.0) {
@@ -423,7 +540,9 @@ public class registeroutlet extends Fragment {
                                 if (x == "nointernet")
                                     Toast.makeText(getContext(), "check your internet connection", Toast.LENGTH_LONG).show();
                                 else if (result1.equals("success")) {
-                                    // db.execSQL("DELETE FROM videodata WHERE phonen="+phone+" ");
+                                    if(map!=0) {
+                                        db.execSQL("delete from mapusers where Google='" + id + "'");
+                                    }
                                     Fragment fragment = null;
                                     fragment = new registeroutlet();
                                     if (fragment != null) {

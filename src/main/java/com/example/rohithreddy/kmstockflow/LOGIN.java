@@ -26,7 +26,6 @@ public class LOGIN extends AppCompatActivity {
     UserSessionManager session;
     private ProgressDialog pDialog;
     String x="nointernet"; String responseBody; String firstname="",fullname;
-    boolean result;
     Response response;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

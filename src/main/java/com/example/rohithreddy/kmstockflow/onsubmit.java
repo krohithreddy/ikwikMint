@@ -1,25 +1,18 @@
 package com.example.rohithreddy.kmstockflow;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Timer;
-
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,20 +24,18 @@ import okhttp3.Response;
  */
 
 public class onsubmit {
-    String longi,lati,phone,pass;
+    String phone,pass;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private ProgressDialog pDialog;
-    String x="nointernet"; String responseBody,responseBody1, result1="",error="", result2="",error2="" ,sk,phonenumber;
-    Response response,response1;
-    File file;Integer pause =1;
-    EditText phonenum,stock;
+    String x="nointernet"; String responseBody, result1="",error="";
+    Response response;
     UserSessionManager session;
-    private SQLiteDatabase db;boolean bool=true;
-    private Cursor c; Timer repeatTask;
+    private SQLiteDatabase db;
+    private Cursor c;
     private final Context mContext;
 
 
@@ -65,7 +56,6 @@ public class onsubmit {
        if (!(c.moveToFirst()) || c.getCount() == 0){
 
        }
-           //Toast.makeText(mContext, "nothing to submit", Toast.LENGTH_LONG).show();
        else {
            c.moveToFirst();
            while (c.isAfterLast() == false) {
@@ -159,7 +149,7 @@ public class onsubmit {
                        Toast.makeText(mContext, "check your internet connection", Toast.LENGTH_LONG).show();
                    else if (result1.equals("success")) {
                        db.execSQL("DELETE FROM mylocation WHERE phonen=" + phone + " ");
-                       Toast.makeText(mContext, "recored successful", Toast.LENGTH_LONG).show();
+                     //  Toast.makeText(mContext, "recored successful", Toast.LENGTH_LONG).show();
                    } else if (result1.equals("failed"))
                    {
                        Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();

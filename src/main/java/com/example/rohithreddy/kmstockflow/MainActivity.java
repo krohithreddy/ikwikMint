@@ -1,11 +1,8 @@
 package com.example.rohithreddy.kmstockflow;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -14,8 +11,6 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,39 +18,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.vision.barcode.Barcode;
-
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
-
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 import static android.app.Activity.RESULT_OK;
-import static com.example.rohithreddy.kmstockflow.playvideo.READ_BLOCK_SIZE;
-
 public class MainActivity extends Fragment {
-    //    AssetManager assetManager = getContext().getResources().getAssets();
     public static final int REQUEST_CODE = 100;
-    String filename = "myfile", filename1 = "mydata1";
-    Integer count = 0;
-    String datetime = "Hello world!", lm = "location not found";
+    String qrvalue = "";
+    String datetime = "Hello world!";
     double latitude, longitude;
     String longi, lati, phone, pass;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -65,21 +45,15 @@ public class MainActivity extends Fragment {
     };
     private ProgressDialog pDialog;
     String x = "nointernet";
-    String responseBody, responseBody1, result1 = "", error = "", result2 = "", error2 = "", sk, phonenumber;
-    Response response, response1;
-    File file;
-    Integer pause = 1;
+    String responseBody,  result1 = "", error = "", sk, phonenumber;
+    Response response;
+    File file;Integer errorvalue=0;
     EditText phonenum, stock,qrcode;
     UserSessionManager session;
-    private SQLiteDatabase db;
-    boolean bool = true;
-    private Cursor c;
-    Timer repeatTask;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //returning our layout file
-        //change R.layout.yourlayoutfilename for each of your fragments
         View view = inflater.inflate(R.layout.activity_main, container, false);
         getActivity().setTitle("     Stock  Update ");
         session = new UserSessionManager(getActivity());
@@ -98,26 +72,24 @@ public class MainActivity extends Fragment {
 
 
         final Button submit = (Button) view.findViewById(R.id.submit);
-        final Button scan = (Button) view.findViewById(R.id.scanbtn);
+       // final Button scan = (Button) view.findViewById(R.id.scanbtn);
         phonenum = (EditText) view.findViewById(R.id.phone);
-        qrcode = (EditText) view.findViewById(R.id.qrcode);
+       // qrcode = (EditText) view.findViewById(R.id.qrcode);
         stock = (EditText) view.findViewById(R.id.stock);
         stock.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
         phonenum.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        db = getActivity().openOrCreateDatabase("PersonDB", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS mylocation(phonen VARCHAR,date VARCHAR,lat VARCHAR,lng VARCHAR);");
-        //phonenum.setText(phone);
+      //  qrcode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
 
-        db.execSQL("DELETE FROM mylocation WHERE phonen=" + phone + " ");
-        scan.setOnClickListener(new View.OnClickListener() {
+      /*  scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // qrcode.setText("");
                 Intent intent = new Intent(getActivity(), ScanActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
 
             }
 
-        });
+        });*/
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +97,23 @@ public class MainActivity extends Fragment {
             public void onClick(View v) {
                 phonenumber = phonenum.getText().toString();
                 sk = stock.getText().toString();
+            /*    qrvalue=qrcode.getText().toString();
+                    if(!phonenumber.isEmpty()){
+                        if (phonenum.getText().toString().trim().length() < 10) {
+                            phonenum.setError("phone number should be 10 digits");
+                            errorvalue=1;
+                        }
+
+                    }
+                    if(!qrvalue.isEmpty()){
+                        if(qrvalue.length()>8 || qrvalue.length()<8){
+                            qrcode.setError("qrcode should be 8 digits");
+                            errorvalue=2;
+                        }
+
+                    }*/
+
+
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d HH-mm-ss");
                 datetime = sdf.format(new Date());
                 GPSTracker gps = new GPSTracker(getActivity());
@@ -134,16 +123,23 @@ public class MainActivity extends Fragment {
                     if (latitude == 0.0) {
                         Toast.makeText(getContext(), "wait for location and try again",
                                 Toast.LENGTH_SHORT).show();
-                    } else if (phonenum.getText().toString().trim().length() < 10) {
+                    }
+                    else if (phonenum.getText().toString().trim().length() < 10) {
                         phonenum.setError("phone number should be 10 digits");
-                    } else if (stock.getText().toString().trim().length() == 0) {
+                    }
+                   /* else if(qrvalue.isEmpty()&&phonenumber.isEmpty()){
+                        //enter either phone or qrcode
+                        Toast.makeText(getContext(), "enter either phone number or qrcode",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else if(errorvalue.equals(1) || errorvalue.equals(2)){
+                    //do nothing
+                    }
+                    */else if (stock.getText().toString().trim().length() == 0) {
                         stock.setError("stock cant be empty ");
                     } else {
                         longi = String.valueOf(longitude);
                         lati = String.valueOf(latitude);
-                        db.execSQL("CREATE TABLE IF NOT EXISTS mylocation(phonen VARCHAR,date VARCHAR,lat VARCHAR,lng VARCHAR);");
-                        c = db.rawQuery("SELECT * FROM mylocation WHERE phonen=" + phone + " ", null);
-                        final JSONArray resultSet = new JSONArray();
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected void onPreExecute() {
@@ -171,6 +167,7 @@ public class MainActivity extends Fragment {
                                 JSONObject data = new JSONObject();
                                 try {
                                     data.put("phone", phonenumber);
+                                  //  data.put("qrcode",qrvalue);
                                     data.put("stock", sk);
                                     data.put("date", datetime);
                                     data.put("lng", longi);
@@ -225,6 +222,7 @@ public class MainActivity extends Fragment {
                                 else if (result1.equals("success")) {
                                     phonenum.setText("");
                                     stock.setText("");
+                                 //   qrcode.setText("");
                                     Toast.makeText(getContext(), "recored successful", Toast.LENGTH_LONG).show();
                                 } else if (result1.equals("failed")) {
                                     Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
@@ -240,6 +238,7 @@ public class MainActivity extends Fragment {
                                 }
                                 result1 = "";
                                 error = "";
+                                qrvalue="";
 
                             }
 
@@ -251,6 +250,7 @@ public class MainActivity extends Fragment {
                     gps.showSettingsAlert();
                 }
                 new onsubmit(getActivity());
+                errorvalue=0;
 
             }
         });
@@ -298,6 +298,7 @@ public class MainActivity extends Fragment {
                     @Override
                     public void run() {
                         qrcode.setText(barcode.displayValue);
+                        qrvalue=qrcode.getText().toString();
                     }
 
                 });

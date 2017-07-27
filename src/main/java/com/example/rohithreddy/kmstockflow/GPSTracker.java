@@ -68,7 +68,7 @@ public class GPSTracker extends Service implements LocationListener {
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
-                System.out.println("on your gps");
+               // System.out.println("on your gps");
 //                Toast.makeText(getBaseContext(), "on your gps",
   //                      Toast.LENGTH_SHORT).show();
             } else {
