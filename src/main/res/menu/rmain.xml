@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/sync"
+        android:orderInCategory="100"
+        android:title="Sync Routes"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/play"
         android:orderInCategory="100"
-        android:title="playvideo"
+        android:title="Playvideo"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="LOGOUT"
         app:showAsAction="never" />
+
 
 </menu>

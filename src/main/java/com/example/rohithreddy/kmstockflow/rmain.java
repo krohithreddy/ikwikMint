@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
@@ -31,9 +32,11 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.rohithreddy.kmstockflow.R.id.container;
 import static com.example.rohithreddy.kmstockflow.playvideo.READ_BLOCK_SIZE;
 
 public class rmain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    public static Button tb1;
     attendance at;
     public static int navItemIndex = 0;
     public static String mapvalue ="";
@@ -44,7 +47,7 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
     String lm="location not found";
     double latitude,longitude;Integer pause =1;
     private SQLiteDatabase db;UserSessionManager session;
-    Timer repeatTask;String longi,lati,phone;  File file;
+    Timer repeatTask;String longi,lati,phone,pass;  File file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +80,7 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
         HashMap<String, String> user =  session.getUserDetails();
         phone = user.get(UserSessionManager.KEY_NAME);
         fullname = user.get(UserSessionManager.KEY_FULLNAME);
-       // pass = user.get(UserSessionManager.KEY_PASS);
+        pass = user.get(UserSessionManager.KEY_PASS);
       //  name.getText().toString();
         name.setText(phone);
         fname.setText(fullname);
@@ -124,7 +127,9 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
         if (id == R.id.action_settings) {
             if (session.isattendancestarted()) {
                 at.bool=false;
-               at.tb1.performClick();
+                View inflatedView = getLayoutInflater().inflate(R.layout.attendance, null);
+                tb1 = inflatedView.findViewById(R.id.tb1);
+                tb1.performClick();
             }
             session.logoutUser();
             Intent loginIntent = new Intent(rmain.this, LOGIN.class);
@@ -135,6 +140,12 @@ public class rmain extends AppCompatActivity implements NavigationView.OnNavigat
        else if (id == R.id.play) {
             Intent myIntent = new Intent(rmain.this, playvideo.class);
             startActivity(myIntent);
+            return true;
+        }
+        else if (id == R.id.sync) {
+            setpincodes pc = new setpincodes(getApplicationContext(),phone,pass);
+            // Intent myIntent = new Intent(rmain.this, playvideo.class);
+            //startActivity(myIntent);
             return true;
         }
 

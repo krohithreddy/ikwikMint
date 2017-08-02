@@ -10,7 +10,7 @@ public class mapuser {
     private String outletname;
     private String phonenumber;
 
-    public mapuser(int id,String username, String outletname, String phonenumber) {
+    public mapuser(int id,String outletname, String username, String phonenumber) {
         this.id = id;
         this.username = username;
         this.outletname = outletname;

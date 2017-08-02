@@ -62,7 +62,7 @@ public class registeroutlet extends Fragment {
     UserSessionManager session;
     public static EditText ro1, ro2, ro3=null, ro6;AppCompatAutoCompleteTextView ro8,ro10;
     TextView ro4a, ro4b, ro4c;
-    String r1, r2, r3, r4,r4a,r4b,r4c, r5, r6, r7, r8,r8a,pinvalue;
+    String r1, r2, r3, r4,r4a,r4b,r4c, r5, r6, r7, r8,r10,r8a,r10a,pinvalue;
     Spinner sp1, sp2,sp3;
     private int year, month, day;
     private Calendar calendar;
@@ -96,6 +96,7 @@ public class registeroutlet extends Fragment {
         ArrayList<String> routeid = new ArrayList<String>();
       //  routelist.add(0,"Select Route");
         if (!(d.moveToFirst()) || d.getCount() == 0){
+            Toast.makeText(getContext(), "sync to get routes", Toast.LENGTH_LONG).show();
         }
         else {
             d.moveToFirst();
@@ -120,11 +121,11 @@ public class registeroutlet extends Fragment {
                     System.out.println("one step over");
                 }
                 String route=d.getString(1)+"("+d.getString(2)+")";
-                String routerev=d.getString(2)+"("+d.getString(1)+")";
+              //  String routerev=d.getString(2)+"("+d.getString(1)+")";
                 routelist.add(route);
-                routelist.add(routerev);
+               // routelist.add(routerev);
                 routeid.add(d.getString(0));
-                routeid.add(d.getString(0));
+               // routeid.add(d.getString(0));
                 d.moveToNext();
             }
             rlist=routelist;
@@ -178,8 +179,10 @@ public class registeroutlet extends Fragment {
       //  System.out.print(formList);
         pin = pinco.getPinlist();
 //        rlist.add(0,"select route");
+        rlist.add(0,"Get route");
         pin.add(0,"Get Pincode");
         formList.add(0,"0");
+        rid.add(0,"0");
       //  rid.add(0,"0");
 
         session = new UserSessionManager(getActivity());
@@ -239,7 +242,7 @@ public class registeroutlet extends Fragment {
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        sync.setOnClickListener(new View.OnClickListener() {
+     /*   sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setpincodes pc = new setpincodes(getActivity(),phone,pass);
@@ -272,11 +275,11 @@ public class registeroutlet extends Fragment {
                             System.out.println("one step over");
                         }
                         String route=d.getString(1)+"("+d.getString(2)+")";
-                        String routerev=d.getString(2)+"("+d.getString(1)+")";
+                       // String routerev=d.getString(2)+"("+d.getString(1)+")";
                         routelist.add(route);
-                        routelist.add(routerev);
+                       // routelist.add(routerev);
                         routeid.add(d.getString(0));
-                        routeid.add(d.getString(0));
+                       // routeid.add(d.getString(0));
                         d.moveToNext();
                     }
                     rlist=routelist;
@@ -286,7 +289,7 @@ public class registeroutlet extends Fragment {
                 ArrayAdapter<String> routeadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, rlist);
                 ro10.setAdapter(routeadapter);
             }
-        });
+        });*/
 
         sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -340,7 +343,30 @@ public class registeroutlet extends Fragment {
                 if (x>0)
                 r8a = formList.get(x);
 
-                erase=1;
+
+
+            }
+
+
+        });
+        ro10.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // TODO Auto-generated method stub
+
+                r10 = String.valueOf(parent.getItemAtPosition(position));
+                System.out.print("\nselect"+r10+"position"+position);
+                //sp3.setTop(position);
+                //   sp3.setSelection(position);
+                System.out.print("\nset");
+                int x = rlist.indexOf(r10);
+                System.out.print("\n------>index is "+x);
+                if (x>0)
+                    r10a = rid.get(x);
+
+
 
             }
 
@@ -404,11 +430,20 @@ public class registeroutlet extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(r8a==null){
-                    int x = pin.indexOf(ro8.getText().toString());
-                    if(x>0)
-                        r8a = formList.get(x);
-                }
+               // if(r8a==null){
+                    int z = pin.indexOf(ro8.getText().toString());
+                    System.out.println("here 1"+z+"shit"+ro8.getText().toString());
+                    if(z>0)
+                        r8a = formList.get(z);
+                System.out.println("here 1"+z+"fuck"+r8a);
+
+
+                // }
+             //   if(r10a==null){
+                    int y = rlist.indexOf(ro10.getText().toString());
+                    if(y>0)
+                        r10a = rid.get(y);
+               // }
                 System.out.print("\n------>"+pinvalue);
                 System.out.print("\n----->"+r8a);
             /*(    if(pinvalue == "Get Pincode"){
@@ -421,7 +456,7 @@ public class registeroutlet extends Fragment {
                 r3 = ro3.getText().toString();
                 r4 = r4c + "-" + r4a + "-" + r4b;
                 r6 = ro6.getText().toString();
-                r8 = ro8.getText().toString();
+               // r8 = ro8.getText().toString();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d HH-mm-ss");
                 datetime = sdf.format(new Date());
                 GPSTracker gps = new GPSTracker(getActivity());
@@ -443,9 +478,14 @@ public class registeroutlet extends Fragment {
                         ro6.setError("Area cant be empty ");
                     } else if (r7 == "Main road Vicinity") {
                         Toast.makeText(getContext(), "select a Main Vicinity type", Toast.LENGTH_LONG).show();
-                    }/* else if (pinvalue == "Get Pincode") {
+                    }
+                    else if (r10a == null) {
+                        Toast.makeText(getContext(), "sync and select a route from the list", Toast.LENGTH_LONG).show();
+                        ro10.setError("sync and select a route from the list");}
+                    /* else if (pinvalue == "Get Pincode") {
                         Toast.makeText(getContext(), "select a pincode", Toast.LENGTH_LONG).show();
-                    } */ else if (r8a == null) {
+                    } */
+                    else if (r8a == null) {
                         Toast.makeText(getContext(), "select a pincode from the list", Toast.LENGTH_LONG).show();
                         ro8.setError("select a pincode from the list");
                     } else if (latitude == 0.0) {
@@ -454,7 +494,9 @@ public class registeroutlet extends Fragment {
                     } else {
                         longi = String.valueOf(longitude);
                         lati = String.valueOf(latitude);
-                        final JSONArray resultSet = new JSONArray();
+                        System.out.println(r8a);
+                        System.out.println("fucked up here this shit "+r8a);
+                      //  final JSONArray resultSet = new JSONArray();
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected void onPreExecute() {
@@ -480,6 +522,8 @@ public class registeroutlet extends Fragment {
                                     e.printStackTrace();
                                 }
                                 JSONObject data = new JSONObject();
+                                System.out.println(r8a);
+                                System.out.println("fucked up with this shit "+r8a);
                                 try {
                                     data.put("fullName", r1);
                                     data.put("outletName", r2);
@@ -489,6 +533,8 @@ public class registeroutlet extends Fragment {
                                     data.put("area", r6);
                                     data.put("vicinity", r7);
                                     data.put("pincodeID", r8a);
+                                //    data.put("routeID", r10a);
+
                                     data.put("geoLng", longi);
                                     data.put("geoLat", lati);
 
@@ -541,7 +587,7 @@ public class registeroutlet extends Fragment {
                                     Toast.makeText(getContext(), "check your internet connection", Toast.LENGTH_LONG).show();
                                 else if (result1.equals("success")) {
                                     if(map!=0) {
-                                        db.execSQL("delete from mapusers where Google='" + id + "'");
+                                        db.execSQL("delete from mapusers where id='" + id + "'");
                                     }
                                     Fragment fragment = null;
                                     fragment = new registeroutlet();
@@ -568,10 +614,13 @@ public class registeroutlet extends Fragment {
                         }.execute();
 
                     }
+
                 } else {
                     gps.showSettingsAlert();
                 }
+
                  new onsubmit(getActivity());
+
 
             }
         });

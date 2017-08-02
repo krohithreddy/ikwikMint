@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -35,7 +36,7 @@ public class setpincodes {
     private ProgressDialog pDialog;
     Response response;String responseBody;
     Context mContext;String phone,pass,x,result1,error;
-    JSONArray pcodes = new JSONArray();
+    JSONObject pcodes = new JSONObject();
     public setpincodes(Context context,String phone,String pass) {
         this.mContext = context;
         this.phone=phone;this.pass=pass;
@@ -53,7 +54,7 @@ public class setpincodes {
                 pDialog = new ProgressDialog(mContext);
                 pDialog.setMessage("Please wait...");
                 pDialog.setCancelable(false);
-                pDialog.show();
+//                pDialog.show();
 
             }
 
@@ -100,7 +101,7 @@ public class setpincodes {
                         .build();
                 Request request = new Request.Builder()
                        // .url(mContext.getResources().getString(R.string.url_text) + "/posForm")
-                        .url("http://172.16.1.49:8888/kwikmint/index.php/api/stock_flow/fakePincodes")
+                        .url("http://kwikmint.in/dashboard/index.php/api/getRoutes")
                         .post(formBody)
                         .build();
                 try {
@@ -112,8 +113,8 @@ public class setpincodes {
                         JSONObject jsonObj = new JSONObject(responseBody);
                        result1 = jsonObj.getString("status");
                        if (result1.equals("success")) {
-                           pcodes = jsonObj.getJSONArray("pincodes");
-                           System.out.println("\npincode..------- ..................." + pcodes);
+                           pcodes = jsonObj.getJSONObject("routes");
+                           System.out.println("\npin------- ..................." + pcodes);
                        }
                         if (result1.equals("failed")) {
                             error = jsonObj.getString("errorCode");
@@ -137,13 +138,16 @@ public class setpincodes {
                     Toast.makeText(mContext, "check your internet connection", Toast.LENGTH_LONG).show();
                 else if (result1.equals("success")) {
                     db.execSQL("delete from routelist");
-                    for (int i = 0; i < pcodes.length(); i++) {
-                        JSONObject student = null;
+                    Iterator key = pcodes.keys();
+                    while(key.hasNext())  {
+                            JSONObject student =null;
                         try {
-                            student = pcodes.getJSONObject(i);
-                            String routename = student.getString("pincode");
-                            String id = student.getString("value");
-                             String route = student.getString("name");
+                            String keys = (String) key.next();
+                            System.out.println(keys);
+                            student = pcodes.getJSONObject(keys);
+                            String routename = student.getString("POINT");
+                            String id = student.getString("ROUTE_ID");
+                             String route = student.getString("ROUTE");
                             System.out.println(routename);
                             db.execSQL("INSERT INTO routelist VALUES('" + id + "','" + route + "','" + routename + "');");
                         } catch (JSONException e) {
