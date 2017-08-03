@@ -67,7 +67,7 @@ public class registeroutlet extends Fragment {
     private int year, month, day;
     private Calendar calendar;
     int erase=0;
-    ArrayList<String>  formList,pin,rlist,rid ;
+    ArrayList<String>  formList,pin,rlist=null,rid=null ;
     private Cursor c,d;
     private SQLiteDatabase db;
     int map,id;
@@ -179,9 +179,17 @@ public class registeroutlet extends Fragment {
       //  System.out.print(formList);
         pin = pinco.getPinlist();
 //        rlist.add(0,"select route");
+        ArrayList<String> nll = new ArrayList<String>();
+        if(rlist==null)
+        rlist=nll;
+
         rlist.add(0,"Get route");
         pin.add(0,"Get Pincode");
         formList.add(0,"0");
+        ArrayList<String> nid = new ArrayList<String>();
+        if(rid==null)
+            rid=nid;
+
         rid.add(0,"0");
       //  rid.add(0,"0");
 
