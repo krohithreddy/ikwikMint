@@ -52,6 +52,17 @@
             android:text="fullname"
             android:textSize="20sp"/>
 
+        <Button
+            android:id="@+id/mapview"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="view"
+            android:textSize="20sp"
+            android:layout_alignBottom="@+id/outletname"
+            android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
 
 

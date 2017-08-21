@@ -541,7 +541,7 @@ public class registeroutlet extends Fragment {
                                     data.put("area", r6);
                                     data.put("vicinity", r7);
                                     data.put("pincodeID", r8a);
-                                //    data.put("routeID", r10a);
+                                    data.put("routeID", r10a);
 
                                     data.put("geoLng", longi);
                                     data.put("geoLat", lati);
@@ -563,7 +563,7 @@ public class registeroutlet extends Fragment {
                                         .add("request", jsonStr)
                                         .build();
                                 Request request = new Request.Builder()
-                                        .url(getResources().getString(R.string.url_text)+"/posForm")
+                                        .url("http://192.168.30.224:8889/dashboard/index.php/api/stock_flow/posForm")
                                         .post(formBody)
                                         .build();
                                 try {
