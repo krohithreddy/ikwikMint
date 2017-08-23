@@ -88,7 +88,7 @@ public class history extends Fragment {
                             }
                             System.out.println("one step over");
                         }
-                        mapuserList.add(new mapuser(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(5),c.getString(6)));
+                        mapuserList.add(0,new mapuser(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(5),c.getString(6)));
                         c.moveToNext();
                     }
                     c.close();
@@ -125,7 +125,7 @@ public class history extends Fragment {
                     }
                     System.out.println("one step over");
                 }
-                mapuserList.add(new mapuser(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(5),c.getString(6)));
+                mapuserList.add(0,new mapuser(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(5),c.getString(6)));
                 c.moveToNext();
             }
             c.close();

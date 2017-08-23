@@ -2,6 +2,7 @@ package com.example.rohithreddy.kmstockflow;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,23 +43,29 @@ public class mapuseradapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, final View view, ViewGroup viewGroup) {
+        System.out.println("view "+i);
         View v=View.inflate(mcontext,R.layout.listview,null);
         TextView outletname=(TextView) v.findViewById(R.id.outletname);
         TextView username=(TextView) v.findViewById(R.id.username);
         TextView phonenum=(TextView) v.findViewById(R.id.phonenum);
-        Lat = mapuserList.get(i).getLat();
-        Lng = mapuserList.get(i).getLan();
         Button mapview=(Button) v.findViewById(R.id.mapview);
         mapview.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                System.out.println("clicked"+i);
+                Lat = mapuserList.get(i).getLat();
+                Lng = mapuserList.get(i).getLan();
                 Bundle bundle = new Bundle();
                 bundle.putDouble("lat", Lat);
                 bundle.putDouble("lng", Lng);
-                Intent mapactivity = new Intent(mcontext, MapsLocation.class);
-                mapactivity.putExtras(bundle);
-                mcontext.startActivity(mapactivity);
+                String uri = "http://maps.google.com/maps?daddr=" + Lat + "," + Lng + " (" + "Outlet is at" + ")";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.setPackage("com.google.android.apps.maps");
+                mcontext.startActivity(intent);
+              //  Intent mapactivity = new Intent(mcontext, MapsLocation.class);
+                //mapactivity.putExtras(bundle);
+                //mcontext.startActivity(mapactivity);
             }
         });
         outletname.setText(mapuserList.get(i).getOutletname());
