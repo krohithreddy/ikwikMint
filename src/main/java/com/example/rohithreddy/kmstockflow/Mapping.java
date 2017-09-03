@@ -9,6 +9,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,8 @@ public class Mapping extends Fragment {
     String user ,phonenumber,outlet,datetime,longi=null,lati=null;
     double longitude,latitude;
     private SQLiteDatabase db;
+    rmain mainscreen;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_mapping, container, false);
@@ -89,6 +94,18 @@ public class Mapping extends Fragment {
                         phonenum.setText("");
                         outletname.setText("");
                         username.setText("");
+                        Fragment fragment = null;
+                        fragment = new tabsmapping();
+                        if (fragment != null) {
+                            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, fragment);
+                            mainscreen.navItemIndex=4;
+                            ft.commit();
+                        }
+
+                        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
                     }
 
 
